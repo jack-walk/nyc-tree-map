@@ -77,6 +77,10 @@
         'line-color': '#0033a1',
         'line-width': 0.5,
       }}
+        popup={(feature) => {
+          const p = feature.properties;
+          return `<strong>${p.ntaname}</strong><br/>${p.total_planetree} plane trees`;
+        }}
     />
   </Map>
 </div>
