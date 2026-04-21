@@ -68,6 +68,10 @@
         ],
         'fill-opacity': 0.7,
       }}
+    popup={(feature) => {
+      const p = feature.properties;
+      return `<strong>${p.ntaname}</strong><br/>${p.total_planetree} plane trees`;
+      }}
     />
     <MapLayer
       id="nta-outline"
@@ -77,10 +81,7 @@
         'line-color': '#0033a1',
         'line-width': 0.5,
       }}
-        popup={(feature) => {
-          const p = feature.properties;
-          return `<strong>${p.ntaname}</strong><br/>${p.total_planetree} plane trees`;
-        }}
     />
   </Map>
+
 </div>
