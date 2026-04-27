@@ -200,10 +200,14 @@ USAGE EXAMPLE:
         );
       }
 
-      const { color, label } = item;
-      if (typeof color !== 'string' || color.trim() === '') {
+      const { color = '', label, icon = '' } = item;
+
+      const hasColor = typeof color === 'string' && color.trim() !== '';
+      const hasIcon = typeof icon === 'string' && icon.trim() !== '';
+
+      if (!hasColor && !hasIcon) {
         throw new Error(
-          'Categorical legend items require a non-empty string "color" value.'
+          'Categorical legend items require either a non-empty string "color" or "icon" value.'
         );
       }
 
@@ -214,8 +218,9 @@ USAGE EXAMPLE:
       }
 
       return {
-        key: buildKey('category', color, label),
+        key: buildKey('category', hasColor ? color : icon, label),
         color,
+        icon,
         label,
       };
     });
@@ -726,11 +731,15 @@ USAGE EXAMPLE:
     <div class="categorical-legend" aria-label={title || 'Categorical legend'}>
       {#each legendState.entries as item (item.key)}
         <div class="categorical-item">
-          <span
-            class="categorical-swatch"
-            style:background-color={item.color}
-            aria-hidden="true"
-          ></span>
+          {#if item.icon}
+            <span class="categorical-icon" aria-hidden="true">{item.icon}</span>
+          {:else}
+            <span
+              class="categorical-swatch"
+              style:background-color={item.color}
+              aria-hidden="true"
+            ></span>
+          {/if}
           <span class="categorical-label">{item.label}</span>
         </div>
       {/each}
@@ -911,6 +920,17 @@ USAGE EXAMPLE:
     height: 0.875rem;
     flex: 0 0 0.875rem;
     border-radius: 0.125rem;
+  }
+
+  .categorical-icon {
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
   }
 
   .categorical-label {
